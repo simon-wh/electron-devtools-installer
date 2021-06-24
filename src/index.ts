@@ -95,9 +95,9 @@ const install = (
         .find((e: { name: string }) => e.name === extensionName);
   } else {
     extensionInstalled =
-      !!extensionName &&
-      BrowserWindow.getDevToolsExtensions &&
-      BrowserWindow.getDevToolsExtensions().hasOwnProperty(extensionName);
+      !!extensionName && 
+      (BrowserWindow as any).getDevToolsExtensions &&
+      (BrowserWindow  as any).getDevToolsExtensions().hasOwnProperty(extensionName);
   }
 
   if (!forceDownload && extensionInstalled) {
@@ -113,7 +113,7 @@ const install = (
           .find((e: { name: string }) => e.name).id;
         (session.defaultSession as any).removeExtension(extensionId);
       } else {
-        BrowserWindow.removeDevToolsExtension(extensionName);
+        (BrowserWindow  as any).removeDevToolsExtension(extensionName);
       }
     }
 
@@ -126,7 +126,7 @@ const install = (
         });
     }
 
-    const name = BrowserWindow.addDevToolsExtension(extensionFolder); // eslint-disable-line
+    const name = (BrowserWindow  as any).addDevToolsExtension(extensionFolder); // eslint-disable-line
 
     fs.writeFileSync(
       getIDMapPath(),
